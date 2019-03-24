@@ -7,8 +7,13 @@ window.onload=function(){
     var snakeW=10;
     var snakeH=10;
     var score=0;
+     var len=4;
+    var snake=[];
+    for(var i=len-1;i>=0;i--){
+        snake.push({x:i,y:0});
+    }
     document.addEventListener("keydown",getDirection);
-    function getDirection(e){
+    function getDirection(e){  //link key to direction
         if(e.keyCode==37&&direction!=="right"){
             direction="left";
         }else if(e.keyCode==38&&direction!=="down"){
@@ -21,7 +26,7 @@ window.onload=function(){
     }
 
 
-    function drawSnake(x,y){
+    drawSnake(x,y)=>{
 
     ctx.fillStyle = "#008000";
     ctx.fillRect(x*snakeW,y*snakeH,snakeW,snakeH);
@@ -30,11 +35,7 @@ window.onload=function(){
     ctx.strokeRect(x*snakeW,y*snakeH,snakeW,snakeH);
 
     }
-    var len=4;
-    var snake=[];
-    for(var i=len-1;i>=0;i--){
-        snake.push({x:i,y:0});
-    }
+   
    food={
        x:Math.round(Math.random()*(cvsW/snakeW)),
        y:Math.round(Math.random()*(cvsH/snakeH))
