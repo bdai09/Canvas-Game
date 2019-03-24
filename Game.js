@@ -7,11 +7,7 @@ window.onload=function(){
     var snakeW=10;
     var snakeH=10;
     var score=0;
-     var len=4;
-    var snake=[];
-    for(var i=len-1;i>=0;i--){
-        snake.push({x:i,y:0});
-    }
+    
     document.addEventListener("keydown",getDirection);
     getDirection(e)=>{  //link key to direction
         if(e.keyCode==37&&direction!=="right"){
@@ -30,6 +26,11 @@ window.onload=function(){
     ctx.fillRect(x*snakeW,y*snakeH,snakeW,snakeH);
     ctx.fillStyle = "#FFF";
     ctx.strokeRect(x*snakeW,y*snakeH,snakeW,snakeH);
+    }
+     var len=4;
+    var snake=[];
+    for(var i=len-1;i>=0;i--){
+        snake.push({x:i,y:0});
     }
    //random put food in
    food={
