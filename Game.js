@@ -7,9 +7,10 @@ window.onload=function(){
     var snakeW=10;
     var snakeH=10;
     var score=0;
+
     
     document.addEventListener("keydown",getDirection);
-    getDirection(e)=>{  //link key to direction
+    function getDirection(e){
         if(e.keyCode==37&&direction!=="right"){
             direction="left";
         }else if(e.keyCode==38&&direction!=="down"){
@@ -21,33 +22,29 @@ window.onload=function(){
         }
     }
 
-    drawSnake(x,y)=>{
+    function drawSnake(x,y){
     ctx.fillStyle = "#008000";
     ctx.fillRect(x*snakeW,y*snakeH,snakeW,snakeH);
     ctx.fillStyle = "#FFF";
     ctx.strokeRect(x*snakeW,y*snakeH,snakeW,snakeH);
     }
-     var len=4;
+    var len=4;
     var snake=[];
     for(var i=len-1;i>=0;i--){
         snake.push({x:i,y:0});
     }
-   //random put food in
+    //prepare snack food
    food={
        x:Math.round(Math.random()*(cvsW/snakeW)),
        y:Math.round(Math.random()*(cvsH/snakeH))
    }
-   drawFood(x,y)=>{
-
+   function drawFood(x,y){
     ctx.fillStyle = "#FFFF00";
     ctx.fillRect(x*snakeW,y*snakeH,snakeW,snakeH);
-  
     ctx.fillStyle = "#FFF";
     ctx.strokeRect(x*snakeW,y*snakeH,snakeW,snakeH);
-
     } 
-   //if location overlap->collision
-    checkCollision(x,y,arr)=>{
+    function checkCollision(x,y,arr){
       for(var i=1;i<arr.length;i++){
           if(x==arr[i].x &&  y==arr[i].y){
               return true;
@@ -55,13 +52,13 @@ window.onload=function(){
       }
       return false;
     }
-    //trace score
-    drawScore(i)=>{
+    //score board
+    function drawScore(i){
     ctx.fillStyle="black";
     ctx.font="15px Verdana";
     ctx.fillText("Score: "+i,5, cvsH-5)
     }
-    draw()=>{
+    function draw(){
         ctx.clearRect(0,0,cvsW,cvsH)
         for(var i=0;i<snake.length;i++){
             var x=snake[i].x;
@@ -71,8 +68,7 @@ window.onload=function(){
         drawFood(food.x,food.y);
         var snakeX=snake[0].x;
         var snakeY=snake[0].y;
-        
-       //if hit to boundary wall, game over
+       //when touch wall game over
        if(snakeX<0||snakeY<0||snakeX>=cvsW/snakeW||snakeY>=cvsH/snakeH ||
         checkCollision(snakeX,snakeY,snake)){
            location.reload();
@@ -93,15 +89,16 @@ window.onload=function(){
             y:snakeY
         };
         score++;
-       }else{ //if not eat, just move not grow
+       }else{ //if not eat, only move not grow
         snake.pop();
         var newHead={
             x:snakeX,
             y:snakeY
         };
-       }        
+       }   
         snake.unshift(newHead);
         drawScore(score);
     }
-this.setInterval(draw,100);
+
+this.setInterval(draw,200);
 }
