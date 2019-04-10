@@ -25,3 +25,28 @@ button:hover{
     color: rgb(90, 89, 89);
     border: 1px solid grey;
   }
+
+.all_bg{
+    width:800px;
+    height:600px;
+    margin:0px auto;
+}
+#allcanvas{
+    position: relative;
+    width:800;
+    height:600px;
+    margin:0px;
+}
+#canvas1{
+    position: absolute;
+    bottom:0;
+    left:0;
+    z-index:1;
+}
+#canvas2{
+    position: absolute;
+    bottom:0;
+    left:0;
+    z-index:0;
+}
+        
