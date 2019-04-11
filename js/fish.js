@@ -8,7 +8,7 @@ var lastTime;
 var deltaTime;
 
 var bgPic=new Image();
-//prepare to draw ane as background
+//part1: prepare to draw ane as background
 var ane;
 var aneObj=function(){
     this.x=[];
@@ -38,6 +38,50 @@ aneObj.prototype.draw=function(){
     ctx2.restore();//means above style only works before restore
 }
 
+//part2: prepare fish food,grow up from top of ane, then lifting to canvas top
+var fruit;
+var fruitObj=function(){
+    this.alive=[]; //if fruit is in use(growing,lifting), true; else waiting in queue to grow and work
+     this.x=[];
+     this.y=[];
+    this.orange=new Image();
+     this.blue=new Image();
+}
+//30 fruit as food in pool, allow 15 in screen, less than 15, let waiting ones start to grow
+fruitObj.prototype.num=30; 
+fruitObj.prototype.init=function(){
+    for(let i=0;i<this.num;i++){
+        this.alive[i]=true; 
+        this.x[i]=0;
+        this.y[i]=0;
+        this.born(i);
+    }
+    this.orange.src="./images/src/fruit.png";
+    this.blue.src="./images/src/blue.png";
+}
+fruitObj.prototype.draw=function(){
+for(let i=0;i<this.num;i++){
+    //find an ane to locate
+    ctx2.drawImage(this.orange, this.x[i]-this.orange.width*0.5,this.y[i]-this.orange.height*0.5);
+}
+}
+//randomly select an ane to grow on
+fruitObj.prototype.born=function(i){
+    var aneID=Math.floor(Math.random()*ane.num);
+     this.x[i]=ane.x[aneID];
+     this.y[i]=canHeight-ane.len[aneID];
+}
+//check
+//fruitObj.prototype.update=function(){
+  //  var cnt=0;
+    //for(let i=0;i<this.num;i++){
+      // if(this.alive[i]) 
+      // cnt++;
+     //}
+//}
+
+
+
 //use functions above to assemble
 document.body.onload=game;
 function game(){
@@ -58,6 +102,9 @@ function init(){
      canHeight=can1.height;
      ane=new aneObj();
      ane.init();
+
+     fruit=new fruitObj();
+     fruit.init();
 }
 function gameloop(){
     window.requestAnimFrame(gameloop);
@@ -68,4 +115,5 @@ function gameloop(){
      ctx2.drawImage(bgPic,0,0,canWidth,canHeight);
      //draw ane
      ane.draw();
+     fruit.draw();
 }
