@@ -46,6 +46,7 @@ var fruitObj=function(){
      this.y=[];
      this.l=[];
      this.spd=[];
+     this.fruitType=[];
     this.orange=new Image();
      this.blue=new Image();
 }
@@ -57,6 +58,7 @@ fruitObj.prototype.init=function(){
         this.x[i]=0;
         this.y[i]=0;
         this.spd[i]=Math.random()*0.017+0.003;//speed for grow up and fly
+        this.fruitType[i]="";
         //this.born(i);
     }
     this.orange.src="./images/src/fruit.png";
@@ -65,6 +67,8 @@ fruitObj.prototype.init=function(){
 fruitObj.prototype.draw=function(){
 for(let i=0;i<this.num;i++){
     if(this.alive[i]){
+        let pic;
+    this.fruitType[i]=="blue"?pic=this.blue:pic=this.orange;
     //find an ane to locate
     if(this.l[i]<=14){
     this.l[i]+=this.spd[i]*deltaTime; //size grow up slowly
@@ -72,7 +76,7 @@ for(let i=0;i<this.num;i++){
     else{
         this.y[i]-=this.spd[i]*7*deltaTime;//fruit start lift up
     }
-    ctx2.drawImage(this.orange, this.x[i]-this.l[i]*0.5,this.y[i]-this.l[i]*0.5, this.l[i],this.l[i]);
+    ctx2.drawImage(pic, this.x[i]-this.l[i]*0.5,this.y[i]-this.l[i]*0.5, this.l[i],this.l[i]);
     if(this.y[i]<10){
         this.alive[i]=false;//flying outside screen
     }
@@ -86,6 +90,8 @@ fruitObj.prototype.born=function(i){
      this.y[i]=canHeight-ane.len[aneID];
      this.l[i]=0;
      this.alive[i]=true;
+     let rand=Math.random();
+     rand<0.2? this.fruitType[i]="blue":this.fruitType[i]="orange"   //orange fruit or blue fruit
 }
 //monitor fruit number
 function fruitMonitor(){
