@@ -53,11 +53,11 @@ var fruitObj=function(){
 fruitObj.prototype.num=30; 
 fruitObj.prototype.init=function(){
     for(let i=0;i<this.num;i++){
-        this.alive[i]=true; 
+        this.alive[i]=false; 
         this.x[i]=0;
         this.y[i]=0;
-        this.spd[i]=Math.random()*0.01+0.005;//speed for grow up and fly
-        this.born(i);
+        this.spd[i]=Math.random()*0.017+0.003;//speed for grow up and fly
+        //this.born(i);
     }
     this.orange.src="./images/src/fruit.png";
     this.blue.src="./images/src/blue.png";
@@ -76,7 +76,7 @@ for(let i=0;i<this.num;i++){
     if(this.y[i]<10){
         this.alive[i]=false;//flying outside screen
     }
-}
+  }
 }
 }
 //randomly select an ane to grow on
@@ -85,15 +85,28 @@ fruitObj.prototype.born=function(i){
      this.x[i]=ane.x[aneID];
      this.y[i]=canHeight-ane.len[aneID];
      this.l[i]=0;
+     this.alive[i]=true;
 }
-//check
-//fruitObj.prototype.update=function(){
-  //  var cnt=0;
-    //for(let i=0;i<this.num;i++){
-      // if(this.alive[i]) 
-      // cnt++;
-     //}
-//}
+//monitor fruit number
+function fruitMonitor(){
+   var cnt=0;
+    for(let i=0;i<fruit.num;i++){
+      if(fruit.alive[i]) 
+        cnt++;//count how many fruit is in screen
+    }
+    if(cnt<15){//if <15, let fruit born
+        sendFruit();
+        return;
+    }
+}
+function sendFruit(){
+    for(let i=0;i<fruit.num;i++){
+        if(!fruit.alive[i]) {
+          fruit.born(i);
+          return;//born one at a time
+        }
+      }
+}
 
 
 
@@ -130,5 +143,6 @@ function gameloop(){
      ctx2.drawImage(bgPic,0,0,canWidth,canHeight);
      //draw ane
      ane.draw();
+     fruitMonitor();
      fruit.draw();
 }
